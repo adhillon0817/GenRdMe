@@ -1,52 +1,74 @@
 // TODO: Include packages needed for this application
-
+const fs = require("fs");
+const path = require("path");
+const inquirer = require("inquirer");
+const generateMarkdown = require("./utils/generateMarkdown");
 // TODO: Create an array of questions for user input
-const questions = [];
-return questions.prompt([
+const questions = [
+
         {
             type: 'input',
             name: 'title',
             message: 'What would you like to title your ReadMe?',
         },
-
         {
             type: 'input',
-            name: 'Table of Contents',
-            message: "What all goes in your table of content?",
-        },
-        {
-            type: 'input',
-            name: 'Description',
+            name: 'description',
             message: "How would you describe your work?",
         },
         {
+            type: 'list',
+            name: 'license',
+            message: "What kind of license would you like to use?",
+            choices: ["MIT", "APACHE", "GPL"]
+        },
+        {
             type: 'input',
-            name: 'Installation',
+            name: 'installation',
             message: "What installations did you have to go through?",
         },
         {
             type: 'input',
-            name: 'Usage',
+            name: 'usage',
             message: "How do you use the application?",
         },
         {
             type: 'input',
-            name: 'Contributing',
+            name: 'contributing',
             message: "What are the contributions?",
         },
         {
             type: 'input',
-            name: 'Tests',
+            name: 'tests',
             message: "What test did you run in order to get this ourcome?",
         },
+        {
+            type: 'input',
+            name: 'email',
+            message: "What is your email?",
+        },
+        {
+            type: 'input',
+            name: 'gitHub',
+            message: "What is your GitHub username?",
+        },
         
-    ])
+    ]
+
+function writeToFile(fileName, data){
+    return fs.writeFileSync(path.join(process.cwd(), fileName), data);
 }
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
 
 // TODO: Create a function to initialize app
-function init() {}
+function init() {
+    inquirer.prompt(questions)
+    .then((response) => {
+    console.log(response)
+    writeToFile("./output/README.md", generateMarkdown(response))
+
+})}
 
 // Function call to initialize app
 init();
+
+
